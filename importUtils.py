@@ -1,6 +1,7 @@
 import datetime, os
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 #Reads thomas NWP format, crops it accordingly and aggregates into one dataframe
 def thomas_data_to_pd(data_folder_name="ThomasNWP"):
@@ -26,3 +27,23 @@ def thomas_data_to_pd(data_folder_name="ThomasNWP"):
             full_nwp_pd = pd.concat([full_nwp_pd, buffer], join='outer', ignore_index=True)
 
     return full_nwp_pd
+
+def nigel_data_to_pd(data_folder_name='NWP_data/Edmonton'):
+    default_house = 'egauge18369'
+    folder_path = os.path.join(os.getcwd(), data_folder_name)
+    if default_house not in os.listdir(folder_path):
+        print('cannot find the default house (', default_house, ') in the specified folder')
+    else:
+        folder_path = os.path.join(folder_path, default_house)
+        if default_house + '.csv' not in os.listdir(folder_path):
+            print('didnt find the csv file, pls check naming convention')
+        else:
+            file = os.path.join(folder_path, default_house + '.csv')
+
+            nwp_pd = pd.read_csv(file)
+            nwp_pd['Time (UTC)'] = [datetime.datetime.strptime(date, "%Y-%m-%d %H:%M") for date in
+                              nwp_pd['Time (UTC)'].to_list()]
+            nwp_pd['Time (UTC)'] = [datetime.datetime.timestamp(date) for date in nwp_pd['Time (UTC)'].to_list()]
+
+            return nwp_pd
+

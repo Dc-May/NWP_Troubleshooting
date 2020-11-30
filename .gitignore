@@ -6,3 +6,13 @@
 *.csv
 
 ThomasNWP/
+
+venv/
+
+__pycache__/
+
+venv/Lib/site-packages/pandas/tests/indexes/multi/
+
+venv/Lib/site-packages/pandas/tests/indexes/period/
+
+venv/Lib/site-packages/pandas/tests/indexes/timedeltas/
